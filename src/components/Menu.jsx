@@ -1,8 +1,14 @@
+import { Box, CssBaseline, Drawer } from '@mui/material'
 import React from 'react'
 
 const Menu = () => {
   return (
-    <div style={{backgroundColor:'blue'}}>Menu</div>
+    <Box>
+      <CssBaseline/>
+      <Drawer>
+      
+      </Drawer>
+    </Box>
   )
 }
 
