@@ -1,7 +1,7 @@
-import { Button, IconButton } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { makeStyles } from '@mui/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
-import React, { useState } from 'react'
+import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CurrencyList from './pages/CurrencyList'
 import CurrencyConverter from './pages/CurrencyConverter'
@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Menu from './components/Menu';
 import Theme from './components/Theme';
 import './app.css';
+import { useStateContext } from './contexts/contextProvider';
 
 const useStyle = makeStyles(() => ({
   root: { 
@@ -23,17 +24,17 @@ const useStyle = makeStyles(() => ({
     bottom: '20px',
   },
   menu: {
-    width: '20vw',
+    position: 'fixed',
+    zIndex: 55,
   },
   content: {
-    width: '80vw',
+    width: '100vw',
   },
 }))
 
 const App = () => {
   const classes = useStyle()
-  const [menuActive, setMenuActive] = useState(true)
-  const [themeActive, setThemeActive] = useState(true)
+  const { activeMenu, themeSettings, setThemeSettings } = useStateContext()
   return (
     <>
       <BrowserRouter>
@@ -42,23 +43,22 @@ const App = () => {
             <IconButton 
               color= 'primary'
               size= 'large'
+              onClick={()=>setThemeSettings(true)}
             >
               <SettingsIcon 
                 fontSize= 'large'  
               />
             </IconButton>
           </div>
-          {menuActive && 
-            <div className={classes.menu}>
+            <div className={classes.menu} active={activeMenu}>
               <Menu/>
             </div>
-          }
-          {themeActive &&
+          {themeSettings &&
             <div>
               <Theme/>
             </div>
           }
-          <div className={classes.content}>
+          <div className={classes.content} active={activeMenu}>
             <Navbar/>
             <Routes>
               <Route path="/" element={<CurrencyConverter />}/>

@@ -5,10 +5,10 @@ const StateContext = createContext()
 
 export const ContextProvider = ({children}) => {
     const [activeMenu, setActiveMenu] = useState(true)
-    const [themeSettings, setthemeSettings] = useState(false)
+    const [themeSettings, setThemeSettings] = useState(false)
 
     return (
-        <StateContext.Provider value={{activeMenu, setActiveMenu, themeSettings, setthemeSettings}}>
+        <StateContext.Provider value={{activeMenu, setActiveMenu, themeSettings, setThemeSettings}}>
             {children}
         </StateContext.Provider>
     )

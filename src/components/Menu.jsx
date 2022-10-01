@@ -2,6 +2,7 @@ import { Box, CssBaseline, Drawer, IconButton, List, ListItem, ListItemButton, L
 import { styled, useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react'
+import { useStateContext } from '../contexts/contextProvider';
 
 const DrawerHeader = styled('div')(({theme})=>({
   display: 'flex',
@@ -14,6 +15,8 @@ const DrawerHeader = styled('div')(({theme})=>({
 
 const Menu = () => {
   const theme = useTheme()
+  const { activeMenu, setActiveMenu } = useStateContext()
+
   return (
     <Box>
       <CssBaseline/>
@@ -28,10 +31,12 @@ const Menu = () => {
         }}
         variant="persistent"
         anchor="left"
-        open={true}
+        open={activeMenu}
       >
         <DrawerHeader>
-          <IconButton>
+          <IconButton 
+            onClick={()=>setActiveMenu(false)}
+          >
             <CloseIcon/>
           </IconButton>
         </DrawerHeader>
