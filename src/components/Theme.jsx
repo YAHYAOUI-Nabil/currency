@@ -1,10 +1,30 @@
+import { makeStyles } from '@mui/styles'
 import React from 'react'
 
+const useStyle = makeStyles(()=>({
+  container: {
+    position: 'fixed',
+    top:0,
+    left:0,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    width: '100vw',
+    height:'100vh',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex:9999999,
+  },
+  content: {
+    width: '20vw',
+    backgroundColor: 'white',
+    opacity:1,
+  }
+}))
+
 const Theme = () => {
+  const classes = useStyle()
   return (
-    <div style={{display:'flex', flexDirection:'row'}}>
-      <div style={{backgroundColor:'red',  Width:'50vw'}}>theme1</div>
-      <div style={{backgroundColor:'white',  Width:'50vw'}}>theme</div>
+    <div className={classes.container}>
+      <div className={classes.content}>theme1</div>
     </div>
   )
 }

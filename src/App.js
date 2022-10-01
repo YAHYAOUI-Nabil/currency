@@ -26,14 +26,14 @@ const useStyle = makeStyles(() => ({
     width: '20vw',
   },
   content: {
-    width: '80vw'
-  }
+    width: '80vw',
+  },
 }))
 
 const App = () => {
   const classes = useStyle()
   const [menuActive, setMenuActive] = useState(true)
-  const [themeActive, setThemeActive] = useState(false)
+  const [themeActive, setThemeActive] = useState(true)
   return (
     <>
       <BrowserRouter>
