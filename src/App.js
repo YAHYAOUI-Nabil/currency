@@ -24,7 +24,6 @@ const useStyle = makeStyles(() => ({
   },
   menu: {
     width: '20vw',
-    height: '100vh',
   },
   content: {
     width: '80vw'
