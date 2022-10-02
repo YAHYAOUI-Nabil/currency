@@ -1,29 +1,47 @@
-import React, { useEffect } from 'react'
-const axios = require("axios");
+import { Grid, Box, Paper } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { getCurrencyList } from '../utils/fetchData'
 
-const options = {
-    method: 'GET',
-    url: 'https://currencyscoop.p.rapidapi.com/currencies',
-    headers: {
-      'X-RapidAPI-Key': 'b354ccd105mshd1d28eafbec4dccp189dedjsn9bb5e24af953',
-      'X-RapidAPI-Host': 'currencyscoop.p.rapidapi.com'
-    }
-  };
 
 
 
 
 const CurrencyList = () => {
-    useEffect(() => {
-        axios.request(options).then(function (response) {
-            console.log(response.data);
-        }).catch(function (error) {
-            console.error(error);
-        });
-    }, [])
-    
+  const [currencies, setCurrencies] = useState([]) 
+  useEffect(() => {
+      getCurrencyList().then((data) => setCurrencies(Object?.values(data)))
+  }, [])
+  
   return (
-    <div>CurrencyList</div>
+    <Grid 
+      container
+      spacing={2}
+      sx={{padding:'20px'}}
+    >
+      {
+        currencies?.map((item)=>(
+          <Grid 
+            item 
+            lg={4}
+            key={item.currency_code}
+          >
+            <Box>
+              <Paper
+                elevation={12}
+                sx={{
+                  height:'10vh', 
+                  textAlign:'left', 
+                  padding:'20px',
+                }}
+              >
+                {item.currency_code} : {item.currency_name}
+              </Paper>
+            </Box>
+
+          </Grid>
+        ))
+      }
+    </Grid>
   )
 }
 

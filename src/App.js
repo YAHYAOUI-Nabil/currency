@@ -28,7 +28,7 @@ const useStyle = makeStyles(() => ({
     zIndex: 55,
   },
   content: {
-    width: '100vw',
+    // width: '100vw',
   },
 }))
 
@@ -50,7 +50,7 @@ const App = () => {
               />
             </IconButton>
           </div>
-            <div className={classes.menu} active={activeMenu}>
+            <div className={classes.menu}>
               <Menu/>
             </div>
           {themeSettings &&
@@ -58,7 +58,7 @@ const App = () => {
               <Theme/>
             </div>
           }
-          <div className={classes.content} active={activeMenu}>
+          <div className={classes.content}>
             <Navbar/>
             <Routes>
               <Route path="/" element={<CurrencyConverter />}/>
