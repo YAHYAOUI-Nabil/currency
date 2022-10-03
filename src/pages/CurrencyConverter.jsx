@@ -33,9 +33,9 @@ const CurrencyConverter = () => {
           component="form"
           noValidate
           sx={{
-            display: 'grid',
-            gridTemplateColumns: { sm: '1fr 1fr 1fr 1fr 1fr' },
+            display: 'flex',
             gap: 2,
+            alignItems: 'center',
           }}
         >
           <FormControl variant="standard">
@@ -47,7 +47,7 @@ const CurrencyConverter = () => {
             <TextField/>
           </FormControl>
           <FormControl variant="standard">
-            <IconButton>
+            <IconButton color='primary' sx={{border:'1px solid blue'}}>
               <SyncAltIcon />
             </IconButton>
           </FormControl>
