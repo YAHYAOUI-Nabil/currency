@@ -4,7 +4,7 @@ const StateContext = createContext()
 
 
 export const ContextProvider = ({children}) => {
-    const [activeMenu, setActiveMenu] = useState(true)
+    const [activeMenu, setActiveMenu] = useState(false)
     const [themeSettings, setThemeSettings] = useState(false)
 
     return (

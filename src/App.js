@@ -22,6 +22,7 @@ const useStyle = makeStyles(() => ({
     position: 'fixed',
     right: '20px',
     bottom: '20px',
+    color: "white",
   },
   menu: {
     position: 'fixed',
@@ -29,6 +30,9 @@ const useStyle = makeStyles(() => ({
   },
   content: {
     // width: '100vw',
+  },
+  setting: {
+    color: "white",
   },
 }))
 
@@ -41,11 +45,11 @@ const App = () => {
         <div className={classes.root}>
           <div className={classes.theme}>
             <IconButton 
-              color= 'primary'
               size= 'large'
               onClick={()=>setThemeSettings(true)}
             >
               <SettingsIcon 
+                className={classes.setting}
                 fontSize= 'large'  
               />
             </IconButton>

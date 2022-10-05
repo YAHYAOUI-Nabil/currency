@@ -17,10 +17,11 @@ export const getCurrencyList = async () => {
 
 export const getCurrencyConverter = async () => {
   const response = await axios.get(`${BASE_URI}latest`, options)
-  return response.data.response.fiats
+  console.log(response.data.response)
+  return response.data.response
 }
 
 export const getHistoricalCurrencyData = async () => {
   const response = await axios.get(`${BASE_URI}historical`, options)
-  return response.data.response.fiats
+  return response.data.response
 }
