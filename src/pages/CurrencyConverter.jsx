@@ -1,34 +1,44 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
+import { Box, Button, CssBaseline, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Container } from '@mui/system'
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import React, { useEffect, useState } from 'react'
 import { getCurrencyConverter, getCurrencyList } from '../utils/fetchData';
 
+
 const useStyle = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    
-    width: "98vw",
-    height:"90.12vh",
+    width: "100%",
+    height:"100vh",
+    position: 'relative',
+    padding:0,
   },
   container: {
-    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    padding: '0',
+    // alignItems: 'center',
     backgroundColor: 'white',
     width: "70vw",
-    height:"60vh",
+    height:"80vh",
     borderRadius: "20px",
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    padding: '0'
   },
   form: {
     width: '100%',
-    padding: '20px',
-    margin: '10px 0'
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '30px',
+    // padding: '20px',
+    // margin: '10px 0',
   },
   formControl : {
     width: '29%',
@@ -36,12 +46,32 @@ const useStyle = makeStyles((theme) => ({
   title: {
     color: '#1976D2',
     backgroundColor: '#F8FAFD',
-    width: '100%',
     textAlign: 'left',
     borderRadius: "20px 20px 0 0",
-    padding: '10px 20px',
-    marginBottom: '20px',
-  }
+    padding: '10px 20px', 
+    marginBottom: '30px',
+  },
+  noteContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '0 30px',
+    marginBottom: '30px',
+  },
+  note: {
+    width: '40%',
+    backgroundColor: '#F2F7FE',
+    borderRadius: '20px',
+    padding: '10px',
+    fontSize: '6px'
+  },
+  result: {
+    marginBottom: '30px',
+    padding: '0 40px'
+  },
+  date: {
+    textAlign: 'right',
+    padding:'0 40px'
+  },
 }))
 
 const CurrencyConverter = () => {
@@ -51,6 +81,8 @@ const CurrencyConverter = () => {
   const [amount, setAmount] = useState(1);
   const [to, setTo] = useState('');
   const [from, setFrom] = useState('');
+  const [fromName, setFromName] = useState('');
+  const [toName, setToName] = useState('');
   const [result, setResult] = useState(0);
 
   const handleChangeFrom = (event) => {
@@ -72,24 +104,29 @@ const CurrencyConverter = () => {
     setResult(amount*(to/from))
   };
 
+  const [currenciesList, setCurrenciesList] = useState([])
   const [currencies, setCurrencies] = useState({})
   useEffect(() => {
     getCurrencyConverter()
     .then((data) => {
+      console.log(data.rates)
       setDate(data.date);
       setCurrencies(data.rates);
       setCurrencyName(Object.keys(data.rates));
     })
     getCurrencyList()
-    .then((data)=>{}) 
+    .then((data)=>{
+      setCurrenciesList(Object.values(data))
+    }) 
   }, [])
 
 
   return (
     <Box className={ classes.root }>
+      <CssBaseline/>
       <Container className={ classes.container }>
         <Box className={classes.title}>
-          <Typography variant='h3'>Convert</Typography>
+          <Typography variant='h3'>Currency Converter</Typography>
         </Box>
         <Box
           className={ classes.form }
@@ -122,8 +159,8 @@ const CurrencyConverter = () => {
               label="From"
               onChange={handleChangeFrom}
             >
-              {currencyName?.map((item) =>(
-                <MenuItem key={item} value={currencies[item]}>{item}</MenuItem>
+              {currenciesList?.map((item) =>(
+                <MenuItem sx={{width: '100%'}} key={ item.currency_code } value={currencies[item.currency_code]}>{ item.currency_code }: { item.currency_name }</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -141,8 +178,8 @@ const CurrencyConverter = () => {
               label="To"
               onChange={handleChangeTo}
             >
-              {currencyName?.map((item) =>(
-                <MenuItem key={item} value={currencies[item]}>{item}</MenuItem>
+              {currenciesList?.map((item) =>(
+                <MenuItem key={ item.currency_code } value={currencies[item.currency_code]}>{ item.currency_code }: { item.currency_name }</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -152,24 +189,28 @@ const CurrencyConverter = () => {
               <Typography>
                 {amount} from = <br/> {result} to
               </Typography>
+              <Typography>
+                1 {from} = {to} 
+              </Typography>
+              <Typography>
+                1 {to} = {from} 
+              </Typography>
             </Box>
           }
-        <Box className={classes.note}>
+        <Box className={classes.noteContainer}>
           <Box className={classes.note}>
-            <Typography>
-              Nous utilisons le taux de marché moyen pour notre convertisseur. 
-              Le taux est donné à titre d'information seulement. 
-              Vous ne bénéficierez pas de ce taux lors d'un envoi d'argent. 
-              Vérifiez les taux d'envoi.
+            <Typography variant='body2' sx={{fontSize: '12px'}}>
+            We use the mid-market rate for our converter. The rate is given for information only. 
+            You will not benefit from this rate when sending money. Check sending rates.
             </Typography>
           </Box>
-          <Box>
-            <Button onClick={handleResult}>Convert</Button>
+          <Box sx={{display: 'flex', alignItems:'center'}}>
+            <Button variant='contained' size='large' onClick={handleResult}>Convert</Button>
           </Box>
         </Box>
-        <Box>
+        <Box className={classes.date}>
           {result>0 && 
-            <Typography>Conversion {from} vers {to} — Dernière mise à jour : {date}</Typography>
+            <Typography>Conversion of {from} to {to} — last update : {date}</Typography>
           }
         </Box>
       </Container>
