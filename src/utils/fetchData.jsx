@@ -17,7 +17,6 @@ export const getCurrencyList = async () => {
 
 export const getCurrencyConverter = async () => {
   const response = await axios.get(`${BASE_URI}latest`, options)
-  console.log(response.data.response)
   return response.data.response
 }
 
