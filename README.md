@@ -35,4 +35,5 @@ npm start
 
 Landing Page
 
+![currency-converter-demo](https://user-images.githubusercontent.com/57776529/194754291-7835b0ec-165a-4666-91f5-0b2cb01be59c.png)
 
