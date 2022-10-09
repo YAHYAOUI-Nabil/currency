@@ -19,7 +19,6 @@ const useStyle = makeStyles((theme) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    // alignItems: 'center',
     backgroundColor: 'white',
     width: "70vw",
     height:"80vh",
@@ -30,15 +29,13 @@ const useStyle = makeStyles((theme) => ({
     left: 0,
     right: 0,
     margin: 'auto',
-    padding: '0'
+    padding: '0',
   },
   form: {
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
     marginBottom: '30px',
-    // padding: '20px',
-    // margin: '10px 0',
   },
   formControl : {
     width: '29%',
@@ -76,13 +73,12 @@ const useStyle = makeStyles((theme) => ({
 
 const CurrencyConverter = () => {
   const classes = useStyle();
-  const [currencyName, setCurrencyName] = useState([]);
+  const [currenciesList, setCurrenciesList] = useState([]);
+  const [currencies, setCurrencies] = useState({});
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState(1);
   const [to, setTo] = useState('');
   const [from, setFrom] = useState('');
-  const [fromName, setFromName] = useState('');
-  const [toName, setToName] = useState('');
   const [result, setResult] = useState(0);
 
   const handleChangeFrom = (event) => {
@@ -95,24 +91,22 @@ const CurrencyConverter = () => {
     setAmount(event.target.value);
   };
   const handleResult = () => {
-    setResult(amount*(to/from))
+    setResult(amount*(currencies[to]/currencies[from]))
   };
   const handleSwitch = () => {
     const aux = from;
     setFrom(to)
     setTo(aux)
-    setResult(amount*(to/from))
+    setResult(amount*(currencies[to]/currencies[from]))
   };
 
-  const [currenciesList, setCurrenciesList] = useState([])
-  const [currencies, setCurrencies] = useState({})
+  
   useEffect(() => {
     getCurrencyConverter()
     .then((data) => {
       console.log(data.rates)
       setDate(data.date);
       setCurrencies(data.rates);
-      setCurrencyName(Object.keys(data.rates));
     })
     getCurrencyList()
     .then((data)=>{
@@ -160,7 +154,7 @@ const CurrencyConverter = () => {
               onChange={handleChangeFrom}
             >
               {currenciesList?.map((item) =>(
-                <MenuItem sx={{width: '100%'}} key={ item.currency_code } value={currencies[item.currency_code]}>{ item.currency_code }: { item.currency_name }</MenuItem>
+                <MenuItem sx={{width: '100%'}} key={ item.currency_code } value={item.currency_code}>{ item.currency_code }: { item.currency_name }</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -179,21 +173,21 @@ const CurrencyConverter = () => {
               onChange={handleChangeTo}
             >
               {currenciesList?.map((item) =>(
-                <MenuItem key={ item.currency_code } value={currencies[item.currency_code]}>{ item.currency_code }: { item.currency_name }</MenuItem>
+                <MenuItem key={ item.currency_code } value={item.currency_code}>{ item.currency_code }: { item.currency_name }</MenuItem>
               ))}
             </Select>
           </FormControl>
         </Box>
           {result>0 &&
             <Box className={classes.result}>
-              <Typography>
-                {amount} from = <br/> {result} to
+              <Typography variant='h6' sx={{marginBottom:'20px', fontWeight:'600'}}>
+                {amount} {from} = <br/> {parseFloat(result).toFixed(6)} {to}
               </Typography>
-              <Typography>
-                1 {from} = {to} 
+              <Typography variant='body2'>
+                1 {from} = {parseFloat(currencies[to]/currencies[from]).toFixed(6)} {to} 
               </Typography>
-              <Typography>
-                1 {to} = {from} 
+              <Typography variant='body2'>
+                1 {to} = {parseFloat(currencies[from]/currencies[to]).toFixed(6)} {from} 
               </Typography>
             </Box>
           }
@@ -210,7 +204,9 @@ const CurrencyConverter = () => {
         </Box>
         <Box className={classes.date}>
           {result>0 && 
-            <Typography>Conversion of {from} to {to} — last update : {date}</Typography>
+            <Typography>Conversion of 
+              <span style={{color:'blue'}}> {currenciesList.filter((item)=> item.currency_code===from)[0].currency_name}</span> to 
+              <span style={{color:'blue'}}> {currenciesList.filter((item)=> item.currency_code===to)[0].currency_name}</span> — last update : {date}</Typography>
           }
         </Box>
       </Container>
