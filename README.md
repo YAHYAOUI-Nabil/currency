@@ -1,6 +1,5 @@
-# BLOOBLOOM
+# Currency Converter
 
-> Currency converter
 ## Content
 
 **[1. Technologies](#heading--1)**
